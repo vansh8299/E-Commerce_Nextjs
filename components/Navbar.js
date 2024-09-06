@@ -8,7 +8,7 @@ import { FaCircleMinus } from "react-icons/fa6";
 import { FaCirclePlus } from "react-icons/fa6";
 import { IoBagCheckSharp } from "react-icons/io5";
 
-const Navbar = () => {
+const Navbar = ({cart, addToCart, removeFromCart, clearCart, subtotal}) => {
    const toggleCart = () => {
     if(ref.current.classList.contains('translate-x-full')){
       ref.current.classList.remove('translate-x-full')
@@ -46,37 +46,14 @@ const Navbar = () => {
                   <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
                   <span onClick={toggleCart} className='absolute top-5 right-2 cursor-pointer text-2xl text-purple-500'><IoMdCloseCircle/></span>
                   <ol className='list-decimal font-semibold ml-4'>
-                    <li>
+                    {Object.keys(cart).length===0 && <div className='my-4 font-semibold'>Your cart is Empty!</div>}
+                   {Object.keys(cart).map((k)=>{return <li key={k}>
                       <div className="item flex my-5">
-                      <div className='w-2/3 font-semibold'>Tshirt - wear the trend</div>
-                      <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>1</span> <FaCirclePlus className='cursor-pointer text-purple-500'/></div>
+                      <div className='w-2/3 font-semibold'>{cart[k].name}</div>
+                      <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>{cart[k].qty}</span> <FaCirclePlus className='cursor-pointer text-purple-500'/></div>
                       </div>
-                    </li>
-                    <li>
-                      <div className="item flex my-5">
-                      <div className='w-2/3 font-semibold'>Tshirt - wear the trend</div>
-                      <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>1</span> <FaCirclePlus className='cursor-pointer text-purple-500'/></div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="item flex my-5">
-                      <div className='w-2/3 font-semibold'>Tshirt - wear the trend</div>
-                      <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>1</span> <FaCirclePlus className='cursor-pointer text-purple-500'/></div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="item flex my-5">
-                      <div className='w-2/3 font-semibold'>Tshirt - wear the trend</div>
-                      <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>1</span> <FaCirclePlus className='cursor-pointer text-purple-500'/></div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="item flex my-5">
-                      <div className='w-2/3 font-semibold'>Tshirt - wear the trend</div>
-                      <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>1</span> <FaCirclePlus className='cursor-pointer text-purple-500'/></div>
-                      </div>
-                    </li>
-                   
+                    </li>})}
+                  
                   </ol>
                   <div className="flex">
                   <button className="flex ml-5 text-white bg-purple-500 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-600 rounded text-sm"><IoBagCheckSharp className='m-1'/>Check Out</button>
