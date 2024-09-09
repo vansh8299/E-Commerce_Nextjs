@@ -13,10 +13,9 @@ export default function App({ Component, pageProps }) {
    try{
    if(localStorage.getItem("cart")){
     setCart(JSON.parse(localStorage.getItem("cart")))
+    saveCart(JSON.parse(localStorage.getItem("cart")))
    }
-   else{
-
-   }
+ 
   }catch(error){
     console.error(error)
     localStorage.clear()
@@ -25,10 +24,10 @@ export default function App({ Component, pageProps }) {
   }, [])
 
  const saveCart = (myCart) =>{
-  localStorage.setItem("cart", myCart)
+  localStorage.setItem("cart", JSON.stringify(myCart))
   let subt = 0;
-  let keys = Object.keys(cart)
-  for(let i=0; keys.length;i++){
+  let keys = Object.keys(myCart)
+  for(let i=0;i<keys.length;i++){
     subt += myCart[keys[i]].price * myCart[keys[i]].qty;
   }
   setSubtotal(subt)
@@ -37,7 +36,7 @@ export default function App({ Component, pageProps }) {
   const addToCart = (itemCode,  qty, price, name, size, variant) => {
     let newCart = cart;
     if(itemCode in cart){
-      newCart[itemCode].qty = cart[itemCode].qyt + qty;
+      newCart[itemCode].qty = cart[itemCode].qty + qty;
 
      }
     else{
