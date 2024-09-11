@@ -1,3 +1,4 @@
+import Product from '@/modals/Product';
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
@@ -117,6 +118,28 @@ const Slug = ({addToCart}) => {
    </div>
  </section></>
   )
+}
+
+export async function getServerSideProps(context){
+  if(!mongoose.connections[0].readystate){
+    await mongoose.connect(process.env.MONGO_URI)
+  }
+  let product = await Product.findOne({slug: context.query.slug})
+  let variants = await Product.find({title: product.title})
+  let colorSizeSlug = {};
+  for (let item of variants){
+    if(Object.keys(colorSizeSlug).includes(item.color)){
+         colorSizeSlug[item.color][item.size] = {slug: item.slug}
+    }
+    else{
+      colorSizeSlug[item.color] = {};
+      colorSizeSlug[item.color][item.size] = {slug: item.slug}
+    }
+  }
+
+  return {
+    props: { product: JSON.parse(JSON.stringify(product)), variants: JSON.parse(JSON.stringify(colorSizeSlug))}
+  }
 }
 
 export default Slug
