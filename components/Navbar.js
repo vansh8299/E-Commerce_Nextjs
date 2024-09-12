@@ -51,7 +51,7 @@ const Navbar = ({cart, addToCart, removeFromCart, clearCart, subtotal}) => {
                     {Object.keys(cart).length===0 && <div className='my-4 font-semibold'>Your cart is Empty!</div>}
                    {Object.keys(cart).map((k)=>{return <li key={k}>
                       <div className="item flex my-5">
-                      <div className='w-2/3 font-semibold'>{cart[k].name}</div>
+                      <div className='w-2/3 font-semibold'>{cart[k].name} ({cart[k].size/cart[k].color})</div>
                       <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus onClick={()=>{removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)}} className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>{cart[k].qty}</span> <FaCirclePlus onClick={()=>{addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)}} className='cursor-pointer text-purple-500'/></div>
                       </div>
                     </li>})}

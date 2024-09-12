@@ -10,7 +10,7 @@ const Tshirt = ({products}) => {
     <div className="container px-5 py-24 mx-auto">
       <div className="flex flex-wrap -m-4 justify-center">
       {Object.keys(products).map((item)=>{
-       return <Link passhref={true} key={products[item]._id} href={`/product/${products[item].slug}`}><div className="lg:w-auto md:w-1/2 p-4 w-full shadow-lg ml-4">
+       return <Link passhref={"true"} key={products[item]._id} href={`/product/${products[item].slug}`}><div className="lg:w-auto md:w-1/2 p-4 w-full shadow-lg ml-4">
        
            <span className="block relative rounded overflow-hidden">
             <img alt="ecommerce" className="m-auto h-[36vh] block" src={products[item].img} />
@@ -32,7 +32,7 @@ const Tshirt = ({products}) => {
                 {products[item].color.includes('green') && <button className='border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none'></button>}
                 {products[item].color.includes('yellow') && <button className='border-2 border-gray-300 ml-1 bg-yellow-700 rounded-full w-6 h-6 focus:outline-none'></button>}
                 {products[item].color.includes('purple') && <button className='border-2 border-gray-300 ml-1 bg-purple-700 rounded-full w-6 h-6 focus:outline-none'></button>}
-                {products[item].color.includes('pink') && <button className='border-2 border-gray-300 ml-1 bg-pink-700 rounded-full w-6 h-6 focus:outline-none'></button>}
+                {products[item].color.includes('pink') && <button className='border-2 border-gray-300 ml-1 bg-pink-400 rounded-full w-6 h-6 focus:outline-none'></button>}
                 {products[item].color.includes('black') && <button className='border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none'></button>}
               </div>
           </div>
