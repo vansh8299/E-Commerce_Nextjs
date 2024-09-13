@@ -2,22 +2,43 @@ import Product from "@/modals/Product";
 import mongoose from "mongoose";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
-const Slug = ({ addToCart, product, variants }) => {
+const Slug = ({buyNow, addToCart, product, variants }) => {
   console.log(product, variants);
   const router = useRouter();
   const { slug } = router.query;
   const [pin, setPin] = useState();
   const [service, setService] = useState();
-
+  
   const checkService = async () => {
     const pins = await fetch("http://localhost:3000/api/pincode");
     const pinjson = await pins.json();
     if (pinjson.includes(parseInt(pin))) {
       setService(true);
+      toast.success('Your pincode is servicable',{
+        position: "bottom-center",
+        autoClose: 3000, 
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+
+      })
     } else {
       setService(false);
+      toast.error('Sorry, this pincode is not servicable',{
+        position: "bottom-center",
+        autoClose: 3000, 
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
 
+      })
     }
   };
 
@@ -38,12 +59,23 @@ const Slug = ({ addToCart, product, variants }) => {
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
+        <ToastContainer
+        position="bottom center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img
               alt="ecommerce"
               className="lg:w-1/2 w-full lg:h-auto px-24 object-cover object-top rounded"
-              src="https://m.media-amazon.com/images/I/51byp5tQ86L._AC_UL320_.jpg"
+              src={product.img}
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
@@ -195,7 +227,12 @@ const Slug = ({ addToCart, product, variants }) => {
                 <span className="title-font font-medium text-2xl text-gray-900">
                   ₹{product.price}
                 </span>
-                <button className="flex ml-8 text-white text-sm bg-purple-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-purple-600 rounded">
+                <button onClick={()=>buyNow(slug,
+                      1,
+                      product.price,
+                      product.title,
+                      size,
+                      color)} className="flex ml-8 text-white text-sm bg-purple-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-purple-600 rounded">
                   Buy Now
                 </button>
                 <button
@@ -263,7 +300,7 @@ export async function getServerSideProps(context) {
     await mongoose.connect(process.env.MONGO_URI);
   }
   let product = await Product.findOne({ slug: context.query.slug });
-  let variants = await Product.find({ title: product.title });
+  let variants = await Product.find({ title: product.title, category: product.category });
   let colorSizeSlug = {};
   for (let item of variants) {
     if (Object.keys(colorSizeSlug).includes(item.color)) {

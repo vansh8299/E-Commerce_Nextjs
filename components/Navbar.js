@@ -33,10 +33,10 @@ const Navbar = ({cart, addToCart, removeFromCart, clearCart, subtotal}) => {
             </div>
             <div className="nav">
                 <ul className="flex items-center space-x-6 md:text-md ml-1 md:ml-16 font-semibold">
-                    <Link href={"/tshirt"}><li>Tshirts</li></Link>
-                    <Link href={"/hoodies"}><li>Hoodies</li></Link>
-                    <Link href={"/stickers"}><li>Stickers</li></Link>
-                    <Link href={"/mugs"}><li>Mugs</li></Link>
+                    <Link href={"/tshirt"}><li className='hover:text-purple-800'>Tshirts</li></Link>
+                    <Link href={"/hoodies"}><li className='hover:text-purple-800'>Hoodies</li></Link>
+                    <Link href={"/stickers"}><li className='hover:text-purple-800'>Stickers</li></Link>
+                    <Link href={"/mugs"}><li className='hover:text-purple-800'>Mugs</li></Link>
                 </ul>
                 </div>  
                 <div className='cart absolute right-0 top-4 mx-5 flex'>
@@ -51,7 +51,8 @@ const Navbar = ({cart, addToCart, removeFromCart, clearCart, subtotal}) => {
                     {Object.keys(cart).length===0 && <div className='my-4 font-semibold'>Your cart is Empty!</div>}
                    {Object.keys(cart).map((k)=>{return <li key={k}>
                       <div className="item flex my-5">
-                      <div className='w-2/3 font-semibold'>{cart[k].name} ({cart[k].size/cart[k].color})</div>
+                      <div className='w-2/3 font-semibold'>{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
+                      
                       <div className='flex font-semibold items-center justify-center w-1/3 text-lg'><FaCircleMinus onClick={()=>{removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)}} className='cursor-pointer text-purple-500'/> <span className='mx-2 text-sm'>{cart[k].qty}</span> <FaCirclePlus onClick={()=>{addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)}} className='cursor-pointer text-purple-500'/></div>
                       </div>
                     </li>})}
