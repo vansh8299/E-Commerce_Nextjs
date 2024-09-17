@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { FaShoppingCart } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 import { CiCirclePlus } from "react-icons/ci";
@@ -9,7 +9,10 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { IoBagCheckSharp } from "react-icons/io5";
 import { MdAccountCircle } from "react-icons/md";
 
-const Navbar = ({cart, addToCart, removeFromCart, clearCart, subtotal}) => {
+const Navbar = ({logout, user, cart, addToCart, removeFromCart, clearCart, subtotal}) => {
+
+  const [dropdown, setDropdown] = useState()
+
    const toggleCart = () => {
     if(ref.current.classList.contains('translate-x-full')){
       ref.current.classList.remove('translate-x-full')
@@ -22,12 +25,15 @@ const Navbar = ({cart, addToCart, removeFromCart, clearCart, subtotal}) => {
 
    }
 
+  
    const ref = useRef()
 
   return (
     <div className='flex flex-col md:flex-row md:justify-start justify-center items-center py-1 my-1 shadow-md sticky top-0 bg-white z-10'>
-        <div className="flex flex-col md:flex-row logo mx-5 mt-3 mb-3">
+        <div className="flex flex-row logo mr-auto mt-3 mb-3 md:mx-5">
+         
             <Link href={"/"} className='cursor-pointer'><Image className=' rounded-3xl' width={50} height={40} src="/logo.jpg" alt='Logo' /></Link>
+         
             <h3 className=' font-bold text-gray-700 mt-3 md:text-xl'>TrendyClothes</h3>
 
             </div>
@@ -39,10 +45,25 @@ const Navbar = ({cart, addToCart, removeFromCart, clearCart, subtotal}) => {
                     <Link href={"/mugs"}><li className='hover:text-purple-800'>Mugs</li></Link>
                 </ul>
                 </div>  
-                <div className='cart absolute right-0 top-4 mx-5 flex'>
-                   <Link href={"/login"}><MdAccountCircle className='text-xl md:text-2xl mx-2 mt-3 mr-2'/></Link>
-                    <FaShoppingCart onClick={toggleCart} className=' text-xl md:text-2xl mt-3 cursor-pointer'/>
+                <div className='cursor-pointer items-center cart absolute right-0 top-4 mx-5 flex'>
+                  <a onMouseOver={()=>{setDropdown(true)}} onMouseLeave={()=>{setDropdown(false)}}>
+                {dropdown && <div onMouseOver={()=>{setDropdown(true)}} onMouseLeave={()=>{setDropdown(false)}} className='absolute right-8 bg-purple-300 top-9 py-4 rounded-md px-5 p-4 mr-3 w-36'>
+                  <ul>
+                    <Link href={'/myaccount'}><li className='py-2 hover:text-purple-800 text-sm font-semibold'>My Account</li></Link>
+                    <Link href={'/order'}><li className='py-2 hover:text-purple-800 text-sm font-semibold'>Orders</li></Link>
+                    <a onClick={logout}><li className='py-2 hover:text-purple-800 text-sm font-semibold'>Logout</li></a>
+                  </ul>
+
+                </div>}
+             
+                  {user.value && <MdAccountCircle className='text-xl md:text-2xl mx-2 mt-3 mr-2' />}
+                  </a>
+                  {!user.value && <Link href={"/login"}><button className='bg-purple-600 mt-3 px-2 mr-3 py-1 rounded-md text-sm text-white'>Login</button></Link>}
+                    <FaShoppingCart onClick={toggleCart} className='text-xl md:text-2xl mt-3 cursor-pointer'/>
                     </div> 
+
+
+            
 
                  <div ref={ref} className='w-72 h-{100vh} siideCart absolute top-0 right-0 bg-purple-100 px-4 py-10 transform transition-transform translate-x-full z-50'>
                   <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
