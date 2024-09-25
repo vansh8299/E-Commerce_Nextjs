@@ -1,10 +1,58 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { IoBagCheckSharp } from "react-icons/io5";
+import Head from "next/head";
+import Script from "next/script";
+
 const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState ("");
+  const [pincode, setPincode] = useState("");
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [disabled, setDisabled] = useState(true);
+
+  const handleChange = (e) => {
+    if (e.target.name === "name") {
+      setName(e.target.value);
+    } else if (e.target.name === "email") {
+      setEmail(e.target.value);
+    } else if (e.target.name === "phone") {
+      setPhone(e.target.value);
+    } else if (e.target.name === "address") {
+      setAddress(e.target.value);
+    } else if (e.target.name === "pincode") {
+      setPincode(e.target.value);
+    }
+    setTimeout(() => {
+      if (name.length>3 && email.length>3 && phone.length>3 && address.length>3 && pincode.length>3) {
+        setDisabled(false);
+      }
+      else{
+        setDisabled(true);
+      }
+      
+    }, 100);
+  };
+  
+
   return (
     <div className="container px-2 sm:m-auto">
+      {/* <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
+        />
+      </Head>
+      <Script
+        type="application/javascript"
+        src={`{process.env.PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.PAYTM_MID}.js`}
+        onload="onScriptLoad();"
+        crossorigin="anonymous"
+      ></Script> */}
       <div className="font-bold text-3xl my-8 text-center">Checkout</div>
       <div className="font-semibold text-xl">1. Delivery Details</div>
 
@@ -16,6 +64,8 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
               Name
             </label>
             <input
+              onChange={handleChange}
+              value={name}
               type="text"
               id="name"
               name="name"
@@ -29,6 +79,8 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
               Email
             </label>
             <input
+              onChange={handleChange}
+              value={email}
               type="email"
               id="email"
               name="email"
@@ -45,6 +97,8 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
             Address
           </label>
           <textarea
+            onChange={handleChange}
+            value={address}
             name="address"
             id="address"
             className="w-full bg-white rounded border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -60,6 +114,8 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
               Phone
             </label>
             <input
+              onChange={handleChange}
+              value={phone}
               type="text"
               id="phone"
               name="phone"
@@ -69,15 +125,18 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
         </div>
         <div className="px-2 w-1/2">
           <div className="mb-4">
-            <label htmlFor="city" className="leading-7 text-sm text-gray-600">
-              City
+          <label htmlFor="pin" className="leading-7 text-sm text-gray-600">
+              PinCode
             </label>
             <input
+              onChange={handleChange}
+              value={pincode}
               type="text"
-              id="city"
-              name="city"
+              id="pincode"
+              name="pincode"
               className="w-full bg-white rounded border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
+          
           </div>
         </div>
       </div>
@@ -90,23 +149,27 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
               State
             </label>
             <input
+              value={state}
               type="text"
               id="state"
               name="state"
               className="w-full bg-white rounded border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              readOnly={true}
             />
           </div>
         </div>
         <div className="px-2 w-1/2">
           <div className="mb-4">
-            <label htmlFor="pin" className="leading-7 text-sm text-gray-600">
-              PinCode
+          <label htmlFor="city" className="leading-7 text-sm text-gray-600">
+              City
             </label>
             <input
+            value={city}
               type="text"
-              id="pin"
-              name="pin"
+              id="city"
+              name="city"
               className="w-full bg-white rounded border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              readOnly={true}
             />
           </div>
         </div>
@@ -121,7 +184,9 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
             return (
               <li key={k}>
                 <div className="item flex my-5">
-                  <div className="font-semibold">{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
+                  <div className="font-semibold">
+                    {cart[k].name} ({cart[k].size}/{cart[k].variant})
+                  </div>
                   <div className="flex font-semibold items-center justify-center w-1/3 text-lg">
                     <FaCircleMinus
                       onClick={() => {
@@ -157,11 +222,18 @@ const Checkout = ({ cart, subtotal, removeFromCart, addToCart }) => {
           })}
         </ol>
         <span className="total">Subtotal = ₹{subtotal}</span>
-        </div>
-        <div className="mx-0">
-        <Link href={"/checkout"}><button className="flex ml-5 text-white bg-purple-500 border-0 py-2 px-2 focus:outline-none hover:bg-purple-600 rounded text-sm"><IoBagCheckSharp className='m-1'/>Pay Now ₹{subtotal}</button></Link>
-        </div>
-   
+      </div>
+      <div className="mx-0">
+        <Link href={"/checkout"}>
+          <button
+            disabled={disabled}
+            className="disabled:bg-purple-300 flex ml-5 text-white bg-purple-500 border-0 py-2 px-2 focus:outline-none hover:bg-purple-600 rounded text-sm"
+          >
+            <IoBagCheckSharp className="m-1" />
+            Pay Now ₹{subtotal}
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };

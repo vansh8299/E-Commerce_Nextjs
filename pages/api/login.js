@@ -17,13 +17,13 @@ const handler = async (req, res) => {
                 return res.status(400).json({ success: false, error: "No user found" });
             }
 
-            const bytes = CryptoJS.AES.decrypt(user.password, 'secret123');
+            const bytes = CryptoJS.AES.decrypt(user.password, process.env.AES_SECRET);
             let decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
 
            
             if (req.body.password === decryptedPass) {
           
-                var token = jwt.sign({ success: true, email: user.email, name: user.name }, 'jwtsecret', {expiresIn: "2d"});
+                var token = jwt.sign({ success: true, email: user.email, name: user.name }, process.env.JWT_SECRET, {expiresIn: "2d"});
                 return res.status(200).json({ success: true, token });
             } else {
                 return res.status(400).json({ success: false, error: "Invalid Credentials" });

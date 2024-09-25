@@ -1,6 +1,9 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 const Order = () => {
+  const router = useRouter()
+  const {id} = router.query
   return (
     <section className="text-gray-600 body-font overflow-hidden">
   <div className="container px-5 py-24 mx-auto">
@@ -10,10 +13,10 @@ const Order = () => {
         <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">Order id: #89777</h1>
 
         <p className="leading-relaxed mb-4">Your Order has been successfully placed</p>
-        <div class="flex mb-4">
-          <a class="flex-grow text-center border-gray-300 py-2 text-lg px-1">Item Description</a>
-          <a class="flex-grow text-center border-gray-300 py-2 text-lg px-1">Quantity</a>
-          <a class="flex-grow text-center border-gray-300 py-2 text-lg px-1">Price</a>
+        <div className="flex mb-4">
+          <a className="flex-grow text-center border-gray-300 py-2 text-lg px-1">Item Description</a>
+          <a className="flex-grow text-center border-gray-300 py-2 text-lg px-1">Quantity</a>
+          <a className="flex-grow text-center border-gray-300 py-2 text-lg px-1">Price</a>
         </div>
         <div className="flex border-t border-gray-200 py-2">
           <span className="text-gray-500">Wear the Trend (XL/Blue)</span>
